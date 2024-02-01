@@ -1,11 +1,12 @@
 from typing import List
 
-from sqlalchemy import Column, Integer, String, ForeignKey, Table
+from sqlalchemy import Column, Integer, String, ForeignKey, Table, Boolean
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 
 class BaseModel(DeclarativeBase):
     pass
+
 
 class Feature(BaseModel):
     __tablename__ = 'feature'
@@ -16,7 +17,7 @@ class Feature(BaseModel):
 
     # formula_id: Mapped[int] = mapped_column(ForeignKey('formula.id'), nullable=True)
 
-    formula: Mapped['Formula'] = relationship(back_populates='features')
+    formula: Mapped['Formula'] = relationship(back_populates='features', lazy=False)
 
     figure_id: Mapped[int] = mapped_column(ForeignKey('figure.id'), nullable=True)
 
@@ -30,6 +31,7 @@ formula_theorema = Table(
     Column('theorema_id', ForeignKey('theorema.id'), primary_key=True),
 )
 
+
 class Theorema(BaseModel):
     __tablename__ = 'theorema'
 
@@ -37,10 +39,9 @@ class Theorema(BaseModel):
 
     name = Column(String(512), nullable=False)
 
-    text = Column(String(1024), nullable=False)
+    text = Column(String(1024), nullable=True)
 
     formulas: Mapped[List["Formula"]] = relationship(secondary=formula_theorema, back_populates='theoremas')
-
 
 
 class Formula(BaseModel):
@@ -50,9 +51,9 @@ class Formula(BaseModel):
 
     name = Column(String(256), unique=True, nullable=False)
 
-    latex = Column(String(1024), nullable=False)
+    latex = Column(String(), nullable=True)
 
-    description = Column(String(2048), nullable=False)
+    description = Column(String(2048), nullable=True)
 
     feature_id = mapped_column(ForeignKey('feature.id'), nullable=True)
 
@@ -64,10 +65,14 @@ class Formula(BaseModel):
 class Figure(BaseModel):
     __tablename__ = 'figure'
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
+    id: Mapped[int] = Column(Integer, primary_key=True, autoincrement=True)
 
-    name:Mapped[str] = Column(String(64), unique=True, nullable=False)
+    name: Mapped[str] = Column(String(64), unique=True, nullable=False)
 
-    info = Column(String(1024), nullable=False)
+    info: Mapped[str] = Column(String(1024), nullable=False)
 
-    features:Mapped[List["Feature"]] = relationship(back_populates='figure')
+    plain: Mapped[bool] = Column(Boolean, nullable=False, default=True)
+
+    image: Mapped[str] = Column(String(), nullable=True)
+
+    features: Mapped[List["Feature"]] = relationship(back_populates='figure')

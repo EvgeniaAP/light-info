@@ -2,6 +2,12 @@ body {
   font-size: .875rem;
 }
 
+body, html {
+  overflow: hidden;
+}
+.mh-50 {
+  max-height: 50%;
+}
 .feather {
   width: 16px;
   height: 16px;
