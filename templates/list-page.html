@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+    <h1>{{ title }}</h1>
+
+    <div class="list-block w-100" style="align-self: center;    height: calc(100% - 2rem)!important;">
+        <div class="list-body overflow-auto d-flex flex-row flex-wrap justify-content-around" style="height: calc(100% - 4rem);">
+            {% for item in items %}
+            <div class="l-df row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative w-100">
+                <div class="col p-4 d-flex flex-column position-static">
+                    <strong class="d-inline-block mb-2 text-primary">{{ item.category }}</strong>
+                    <h3 class="mb-0">{{ item.name }}</h3>
+                    {% if item.sub_category %}
+                    <div class="mb-1 text-muted">{{ item.sub_category }}</div>
+                    {% endif %}
+                    <p class="card-text mb-auto">{{ item.info }}</p>
+                    <a href="/{{ item.link }}/{{ item.id }}" class="stretched-link">Больше</a>
+                </div>
+            </div>
+            {% endfor %}
+
+
+        </div>
+
+
+        <nav class="w-100" style="padding-top: 1rem; position:fixed; bottom: 0;">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" href="?page=1" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                {%  for i in size %}
+                 <li class="page-item {{ 'active' if page - 1==i  else '' }}"><a class="page-link " href="?page={{ i+1 }}">{{ i+1 }}</a></li>
+                {% endfor %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ size.__len__() }}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+    </div>
+
+
+{% endblock %}

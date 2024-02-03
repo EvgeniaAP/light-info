@@ -7,7 +7,7 @@
             <div class="fs-5 col-md-8 mb-2 overflow-auto" style="white-space: pre-wrap">{{ figure.info }}</div>
             <div class="w-100 text-center">
                 {% if figure.plain %}
-                    <img src="data:image/png;base64,{{ figure.image }}" class="h-100"/>
+                    <img src="{{ figure.image }}" class="h-100"/>
                 {% else %}
 
                     <canvas width="500" height="500" id="fig" style="height: 100%; aspect-ratio: 1"></canvas>
@@ -27,26 +27,24 @@
                 {% endif %}
             </div>
         </div>
-        <div class="w-100">
+        <div class="w-100 h-100">
             {% if figure.features.__len__() > 0 %}
                 <div class="fs-4 mb-2">Свойства</div>
-                <div class="w-100 d-flex flex-row justify-content-around flex-wrap">
+                <div class="w-100 d-flex flex-column overflow-auto" style="height: calc(50% - 6rem);">
                     {% for feat in figure.features %}
-                        <div class="col-sm-6 col-lg-3 mb-4 ms-1 me-1">
-                            <div class="card p-3">
-                                <figure class="mb-0 fs-5">
-                                    <blockquote class="blockquote">
-                                        <p>Свойство {{ loop.index }}</p>
-                                    </blockquote>
-                                    <figcaption class="blockquote-footer mb-0 text-muted">
-                                        {{ feat.text }}
-                                        {% if feat.formula %}
-                                            <latex-js hyphenate="false">
-                                                {{ feat.formula.latex }}
-                                            </latex-js>
-                                        {% endif %}
-                                    </figcaption>
-                                </figure>
+                        <div class="card mb-2">
+                            <div class="card-header">
+                                Свойство {{ loop.index }}
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">{{ feat.text }}</p>
+                                {% if feat.formula %}
+                                     <figure class="mb-0 fs-5 mt-1">
+                                        <latex-js hyphenate="false">
+                                            {{ feat.formula.latex }}
+                                        </latex-js>
+                                     </figure>
+                                {% endif %}
                             </div>
                         </div>
                     {% endfor %}

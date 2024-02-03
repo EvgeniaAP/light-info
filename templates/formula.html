@@ -1,3 +1,9 @@
 {% extends "base.html" %}
-{% block title %}{% endblock %}
-{% block content %} {% endblock %}
+{% block title %} {{ formula.name }}{% endblock %}
+{% block content %}
+    <h1>{{ formula.name }}</h1>
+    <latex-js hyphenate="false">
+        {{ formula.latex }}
+    </latex-js>
+    <div class="descr">{{ formula.description }}</div>
+{% endblock %}
