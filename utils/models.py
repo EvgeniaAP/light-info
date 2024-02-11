@@ -7,7 +7,7 @@ from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 class BaseModel(DeclarativeBase):
     pass
 
-
+# свойство
 class Feature(BaseModel):
     __tablename__ = 'feature'
 
@@ -31,7 +31,7 @@ formula_theorema = Table(
     Column('theorema_id', ForeignKey('theorema.id'), primary_key=True),
 )
 
-
+# теорема
 class Theorema(BaseModel):
     __tablename__ = 'theorema'
 
@@ -43,7 +43,7 @@ class Theorema(BaseModel):
 
     formulas: Mapped[List["Formula"]] = relationship(secondary=formula_theorema, back_populates='theoremas')
 
-
+# формула
 class Formula(BaseModel):
     __tablename__ = 'formula'
 
@@ -61,7 +61,7 @@ class Formula(BaseModel):
 
     features: Mapped[List["Feature"]] = relationship(back_populates='formula')
 
-
+# фигура
 class Figure(BaseModel):
     __tablename__ = 'figure'
 
